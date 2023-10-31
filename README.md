@@ -39,6 +39,22 @@ cd ~/Arduino/libraries
 ln -s ~/workspace/Makeblock-Libraries Makeblock-Libraries
 ```
 
+To verify that it is working:
+```
+ll ~/Arduino/libraries
+
+lrwxrwxrwx 1 $USER $USER   49 Oct dd hh:mm Makeblock-Libraries -> /home/$USER/workspace/Makeblock-Libraries/
+```
+
+![Screenshot Arduino IDE](doc/img/Arduino_IDE_Libs.png)
+
+Now you will want to compile the code
+
+First select the right board. (Arduino MEGA or MEGA 2560)
+
+![Screenshot Arduino IDE Select board](doc/img/Arduino_IDE_Board.png)
+
+
 ### __ORIGINAL HOW TO__ How to use:
 
 1. Download the source from the git https://codeload.github.com/Makeblock-official/Makeblock-Libraries/zip/master
