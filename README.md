@@ -22,7 +22,24 @@ As an open source library, we respect all contributors to the open source commun
 
 If you have a discussion about licensing issues, please contact me (myan@makeblock.com -- Mark Yan)
 
-### How to use:
+### How to use @TTTRC
+To use this code, we want to have it into our workspace, to be able to edit the content via VS Code
+
+But we also want it in the Arduino IDE.
+
+For this follow this instruction
+```
+cd ~/workspace
+gh repo clone TTTRC-Robotics/Makeblock-Libraries
+```
+
+Then we want to create a simlink into Arduino folder
+```
+cd ~/Arduino/libraries
+ln -s ~/workspace/Makeblock-Libraries Makeblock-Libraries
+```
+
+### __ORIGINAL HOW TO__ How to use:
 
 1. Download the source from the git https://codeload.github.com/Makeblock-official/Makeblock-Libraries/zip/master
 
