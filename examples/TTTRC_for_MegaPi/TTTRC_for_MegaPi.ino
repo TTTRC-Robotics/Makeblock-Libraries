@@ -172,6 +172,8 @@ boolean start_flag = false;
 boolean move_flag = false;
 boolean blink_flag = false;
 
+const int TIMEOUT_MS = 500;
+long last_serial_msg = 0;
 String mVersion = "0e.01.018";
 //////////////////////////////////////////////////////////////////////////////////////
 float RELAX_ANGLE = -1;                    //Natural balance angle,should be adjustment according to your own car
@@ -1643,7 +1645,7 @@ void runModule(uint8_t device)
         }
         else if(ENCODER_BOARD_PWM_MOTION == subcmd)
         {
-          int16_t speed_temp = readShort(8);  
+          int16_t speed_temp = readShort(8);
           encoders[slot_num-1].setTarPWM(speed_temp);     
         }
         else if(ENCODER_BOARD_SET_CUR_POS_ZERO == subcmd)
@@ -2867,6 +2869,10 @@ void loop()
 
   for(int i=0;i<4;i++)
   {
+    if(millis() - last_serial_msg > TIMEOUT_MS){
+      // timeout of the speed - stop motors!
+      encoders[i].setTarPWM(0);
+    }
     steppers[i].update();
     encoders[i].loop();
   }
@@ -2894,6 +2900,7 @@ void loop()
       {
         index=1;
         isStart = true;
+        last_serial_msg = millis();
       }
     }
     else
@@ -2927,34 +2934,10 @@ void loop()
     readSerial();
   }
 
-  if(Compass.getPort() != 0)
+  if(millis() - update_sensor > 50)
   {
-    Compass.getAngle();
-  }
-  angle_speed = gyro_ext.getGyroY();
-  if(megapi_mode == BLUETOOTH_MODE)
-  {
-    if(millis() - update_sensor > 10)
-    {
-      update_sensor = millis();
-      gyro_ext.fast_update();
-    }
-  }
-  else if(megapi_mode == AUTOMATIC_OBSTACLE_AVOIDANCE_MODE)
-  { 
-    ultrCarProcess();
-  }
-  else if(megapi_mode == BALANCED_MODE)
-  {
+    update_sensor = millis();
     gyro_ext.fast_update();
-    balanced_model();
   }
-  else if(megapi_mode == LINE_FOLLOW_MODE)
-  {
-    line_model();
-  }
-
-  gyro_ext.fast_update();
-  // Serial.println(gyro_ext.getAngleZ());
 
 }
