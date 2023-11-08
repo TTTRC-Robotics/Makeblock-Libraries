@@ -74,6 +74,15 @@ MeGyro::MeGyro(void) : MePort(0)
 MeGyro::MeGyro(uint8_t port) : MePort(port)
 {
   Device_Address = GYRO_DEFAULT_ADDRESS;
+  
+  #ifdef ME_PORT_DEFINED
+  _AD0 = s1;
+  _INT = s2;
+  #endif // ME_PORT_DEFINED
+
+  // Set _AD0 to the ground
+  // https://www.i2cdevlib.com/forums/topic/414-freezing-problem/
+  MePort::dWrite1(LOW);
 }
 
 /**
